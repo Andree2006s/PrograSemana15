@@ -262,17 +262,15 @@ int main() {
                     printf("- Se pueden realizar actividades al aire libre\n");
             }
             case 4:
-                printf("\nClima en %s: Temp: %.1f°C, Viento: %.1f km/h, Humedad: %.1f%%\n", 
-                    nombresZonas[z],
-                    zonas[z].clima.temperatura,
-                    zonas[z].clima.viento,
-                    zonas[z].clima.humedad);
+                printf("\nClima en %s: Temp: %.1f°C, Viento: %.1f km/h, Humedad: %.1f%%\n", nombresZonas[z], zonas[z].clima.temperatura, zonas[z].clima.viento, zonas[z].clima.humedad);
                 printf("Niveles actuales:\n");
                 for (int c = 0; c < CONTAMINANTES; c++) {
-                    printf("  %s: %.2f μg/m³ %s\n",
-                        nombresContaminantes[c],
-                        zonas[z].actual.niveles[c],
-                        zonas[z].actual.niveles[c] > limitesOMS[c] ? "(SUPERA LÍMITE)" : "");
+                    printf("  %s: %.2f ", nombresContaminantes[c], zonas[z].actual.niveles[c]);
+                    if (zonas[z].actual.niveles[c] > limitesOMS[c]) {
+                        printf("(SUPERA LÍMITE)\n");
+                    } else {
+                        printf("\n");
+                    }
                 }
                 break;
             case 5:
