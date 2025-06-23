@@ -134,15 +134,16 @@ void exportarReporte() {
     
     for (int z = 0; z < ZONAS; z++) {
         fprintf(f, "Zona: %s\n", nombresZonas[z]);
-        fprintf(f, "Clima: Temp: %.1fC, Viento: %.1f km/h, Humedad: %.1f%%\n", 
-                zonas[z].clima.temperatura, zonas[z].clima.viento, zonas[z].clima.humedad);
+        fprintf(f, "Clima: Temp: %.1fC, Viento: %.1f km/h, Humedad: %.1f%%\n", zonas[z].clima.temperatura, zonas[z].clima.viento, zonas[z].clima.humedad);
         fprintf(f, "Niveles actuales:\n");
         
         for (int c = 0; c < CONTAMINANTES; c++) {
-            fprintf(f, "  %s: %.2f  %s\n", 
-            nombresContaminantes[c], 
-            zonas[z].actual.niveles[c],
-            zonas[z].actual.niveles[c] > limitesOMS[c] ? "(SUPERA LIMITE)" : "");
+            fprintf(f, "  %s: %.2f  ", nombresContaminantes[c], zonas[z].actual.niveles[c]);
+            if (zonas[z].actual.niveles[c] > limitesOMS[c]) {
+                fprintf(f, "(SUPERA LIMITE)\n");
+            } else {
+                fprintf(f, "\n");
+            }
         }
         
     }
@@ -202,9 +203,12 @@ int main() {
                     }
                     if (diasValidos > 0) {
                         float promedio = suma / diasValidos;
-                        printf("%s Promedio: %.2f %s\n", 
-                            nombresContaminantes[c], promedio,
-                            promedio > limitesOMS[c] ? "(Supera limite OMS)" : "(Dentro del limite)");
+                        printf("%s Promedio: %.2f ", nombresContaminantes[c], promedio);
+                            if (promedio > limitesOMS[c]) {
+                                printf("(Supera limite OMS)\n");
+                            } else {
+                                printf("(Dentro del limite)\n");
+                            }
                     } else {
                         printf("%s: Sin datos validos\n", nombresContaminantes[c]);
                     }
@@ -224,9 +228,12 @@ int main() {
                     }
                     if (sumaPesos > 0) {
                         pred /= sumaPesos;
-                        printf("%s Predicho: %.2f %s\n",
-                            nombresContaminantes[c], pred,
-                            pred > limitesOMS[c] ? "(¡ALERTA!)" : "(Normal)");
+                        printf("%s Predicho: %.2f ", nombresContaminantes[c], pred);
+                            if (pred > limitesOMS[c]) {
+                                printf("(¡ALERTA!)\n");
+                            } else {
+                                printf("(Normal)\n");
+                            }
                     } else {
                         printf("%s: Sin datos suficientes\n", nombresContaminantes[c]);
                     }
